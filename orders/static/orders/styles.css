@@ -1,0 +1,54 @@
+.navbar{
+	background-color: #b12a2a;
+}
+
+.navbar-brand, .nav-link{
+	color: black;
+}
+
+.nav-link{
+	font-size: 20px;
+}
+
+.row, .col-sm{
+	padding-top: 10px;
+}
+
+#cartdiv1{
+	margin-top: 100px;
+	padding-bottom: 80px;
+}
+
+#cartdiv2{
+	padding-top: 50px;
+}
+
+.alert-success{
+	display: none;
+}
+
+.card-img-top{
+	height: 200px;
+}
+
+#ordertable{
+	width: 80%;
+}
+#greet{
+	position: absolute;
+	padding-top: 20px;
+	color: brown;
+}
+
+div.navbar-collapse li:hover{
+  background-color: brown;
+}
+#login, #register{
+	margin-top: 100px;
+}
+.list-inline{
+	padding-top: 10px;
+}
+.msg{
+	color: red;
+}

@@ -1,0 +1,402 @@
+{% extends "orders/layout.html" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg">
+		<h3 class="navbar-brand">Your Pizza Place</h3>
+		<div class="collapse navbar-collapse" id="navbarText">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item">
+		        <a class="nav-link" href="#rpizza">Regular Pizza</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#spizza">Sicilian Pizza</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#toppings">Toppings</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#subs">Subs</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#pasta">Pasta</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#salads">Salads</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#dinner">Dinner</a>
+		      </li>
+		    </ul>
+		    <span class="navbar-text">
+		      	<ul class="navbar-nav mr-auto">
+		      		{% if user.is_authenticated %}
+		      			<li class="nav-item">
+		      				<a id="cart" href="{% url 'cart' %}" class="fa fa-shopping-cart" style="font-size:36px"></a>
+			      		</li>
+			      		<li class="nav-item">
+			      			<a class="nav-link" href="{% url 'your_orders' 'no' %}">Orders</a>
+			      		</li>
+			      		<li class="nav-item">
+				      		<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+				      	</li>
+				    {% else %}
+		      			<li class="nav-item">
+			        		<a class="nav-link" href="{% url 'register' %}">Register</a>
+			      		</li>
+			      		<li class="nav-item">
+				      		<a class="nav-link" href="{% url 'login' %}">Login</a>
+				      	</li>
+			      {% endif %}
+			   	</ul>
+		    </span>
+		</div>
+	</nav>
+	<div class="sticky-top alert alert-success" id="alert-success" role="alert"></div>
+	<div class="container">
+		{% if request.user.username %}
+			<h3 id="greet">Hello {{user}}!</h3>
+		{% endif %}
+		<div id="menu">
+			<center><h1>Menu</h1></center>
+			<div class="row" id="rpizza">
+				<h3>Regular Pizza</h3>
+			</div>
+			<div class="row">
+				{% for r in regular %}
+				    <div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ r.r_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="rp{{r.id}}name" data-username={{request.user.username}} data-item="{{r.r_name}}" data-cat="rpizza">{{r.r_name}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="rp{{r.id}}input1" data-item1="small" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Small: ${{r.r_small}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="rp{{r.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										   </div>
+										</div>
+									<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="rp{{r.id}}input2" data-item2="large" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Large: ${{r.r_large}}</p>
+									  <div class="input-group mb-3">
+									  	<div class="input-group-prepend">
+									  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+										</div>
+										<select class="custom-select" id="rp{{r.id}}quantity2">
+										    <option value="1">One</option>
+										    <option value="2">Two</option>
+										    <option value="3">Three</option>
+										</select>
+									   </div>
+									</div>
+									<button data-id="rp{{r.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Small: ${{r.r_small}}</p>
+						    	<p class="card-text">Large: ${{r.r_large}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+			    {% endfor %}
+			</div>
+			<div class="row" id="spizza">
+				<h3>Sicilian Pizza</h3>
+			</div>
+			<div class="row">
+				{% for s in sicilian %}
+					<div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ s.s_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="sp{{s.id}}name" data-username={{request.user.username}} data-item="{{s.s_name}}" data-cat="spizza">{{s.s_name}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="sp{{s.id}}input1" data-item1="small" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Small: ${{s.s_small}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="sp{{s.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										   </div>
+										</div>
+									<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="sp{{s.id}}input2" data-item2="large" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Large: ${{s.s_large}}</p>
+									  <div class="input-group mb-3">
+									  	<div class="input-group-prepend">
+									  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+										</div>
+										<select class="custom-select" id="sp{{s.id}}quantity2">
+										    <option value="1">One</option>
+										    <option value="2">Two</option>
+										    <option value="3">Three</option>
+										</select>
+									   </div>
+									</div>
+									<button data-id="sp{{s.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Small: ${{s.s_small}}</p>
+						    	<p class="card-text">Large: ${{s.s_large}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+				{% endfor%}
+			</div>
+			<div class="row" id="toppings">
+				<h3>Toppings</h3>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+			    	<div class="card" style="width: 18rem;">
+					  <div class="card-body">
+					    <select class="custom-select" data-username={{request.user.username}} data-cat="toppings" id="selecttoppings">
+					    	{% for t in toppings %}
+						    	<option id="option{{t.id}}" value="{{t.t_name}}">{{t.t_name}}</option>
+						    {% endfor%}
+						</select>
+					    {% if user.is_authenticated %}
+						    <div class="card-text">
+								<button data-id="toppings" class="btn btn-primary addtocart">Add to cart</button>
+						    </div>
+					    {% endif %}
+					  </div>
+					</div>
+			    </div>
+			</div>
+			<div class="row" id="subs">
+				<h3>Subs</h3>
+			</div>
+			<div class="row">
+				{% for sub in subs %}
+					<div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ sub.sub_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="sub{{sub.id}}name" data-username={{request.user.username}} data-item="{{sub.sub_name}}" data-cat="subs">{{sub.sub_name}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="sub{{sub.id}}input1" data-item1="small" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Small: ${{sub.sub_small}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="sub{{sub.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										   </div>
+										</div>
+									<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="sub{{sub.id}}input2" data-item2="large" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Large: ${{sub.sub_large}}</p>
+									  <div class="input-group mb-3">
+									  	<div class="input-group-prepend">
+									  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+										</div>
+										<select class="custom-select" id="sub{{sub.id}}quantity2">
+										    <option value="1">One</option>
+										    <option value="2">Two</option>
+										    <option value="3">Three</option>
+										</select>
+									   </div>
+									</div>
+									<button data-id="sub{{sub.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Small: ${{sub.sub_small}}</p>
+						    	<p class="card-text">Large: ${{sub.sub_large}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+				{% endfor%}
+			</div>
+			<div class="row" id="pasta">
+				<h3>Pasta</h3>
+			</div>
+			<div class="row">
+				{% for p in pasta %}
+					<div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ p.p_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="p{{p.id}}name" data-username={{request.user.username}} data-item="{{p.p_name}}" data-cat="pasta">{{p.p_name}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="p{{p.id}}input1" data-item1="empty" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Price: ${{p.price}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="p{{p.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										</div>
+									</div>
+									<button data-id="p{{p.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Price: ${{p.price}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+				{% endfor%}
+			</div>
+			<div class="row" id="salads">
+				<h3>Salads</h3>
+			</div>
+			<div class="row">
+				{% for salad in salads %}
+					<div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ salad.salad_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="salad{{salad.id}}name" data-username={{request.user.username}} data-item="{{salad.salad}}" data-cat="salad">{{salad.salad}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="salad{{salad.id}}input1" data-item1="empty" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Price: ${{salad.price}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="salad{{salad.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										</div>
+									</div>
+									<button data-id="salad{{salad.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Price: ${{salad.price}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+				{% endfor%}
+			</div>
+			<div class="row" id="dinner">
+				<h3>Dinner</h3>
+			</div>
+			<div class="row">
+				{% for d in dinner %}
+					<div class="col-sm">
+				    	<div class="card" style="width: 18rem;">
+						  <img src="{{ d.d_image.url }}" class="card-img-top" alt="...">
+						  <div class="card-body">
+						    <h5 class="card-title" id="d{{d.id}}name" data-username={{request.user.username}} data-item="{{d.d_name}}" data-cat="dinner">{{d.d_name}}</h5>
+						    {% if user.is_authenticated %}
+							    <div class="card-text">
+							    	<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="d{{d.id}}input1" data-item1="small" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Small: ${{d.d_small}}</p>
+									  	<div class="input-group mb-3">
+										  	<div class="input-group-prepend">
+										  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+											</div>
+											<select class="custom-select" id="d{{d.id}}quantity1">
+											    <option value="1">One</option>
+											    <option value="2">Two</option>
+											    <option value="3">Three</option>
+											</select>
+										   </div>
+										</div>
+									<div class="input-group mb-3">
+									  <div class="input-group-prepend">
+									    <div class="input-group-text">
+									      <input type="checkbox" id="d{{d.id}}input2" data-item2="large" aria-label="Checkbox for following text input">
+									    </div>
+									  </div>
+									  <p class="form-control">Large: ${{d.d_large}}</p>
+									  <div class="input-group mb-3">
+									  	<div class="input-group-prepend">
+									  		<label class="input-group-text" for="inputGroupSelect01">Quantity</label>
+										</div>
+										<select class="custom-select" id="d{{d.id}}quantity2">
+										    <option value="1">One</option>
+										    <option value="2">Two</option>
+										    <option value="3">Three</option>
+										</select>
+									   </div>
+									</div>
+									<button data-id="d{{d.id}}" class="btn btn-primary addtocart">Add to cart</button>
+							    </div>
+						    {% else %}	
+						    	<p class="card-text">Small: ${{d.d_small}}</p>
+						    	<p class="card-text">Large: ${{d.d_large}}</p>
+						    {% endif %}
+						  </div>
+						</div>
+				    </div>
+				{% endfor%}
+			</div>
+		</div>
+	</div>
+{% endblock %}
